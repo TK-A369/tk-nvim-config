@@ -13,9 +13,10 @@ local plugs = {
 	'hrsh7th/cmp-cmdline',
 	'hrsh7th/nvim-cmp',
 	'hrsh7th/cmp-vsnip',
-	'hrsh7th/vim-vsnip'
+	'hrsh7th/vim-vsnip',
+	'scalameta/nvim-metals'
 }
-for _,v in ipairs(plugs) do
+for _, v in ipairs(plugs) do
 	vim.cmd("Plug \'" .. v .. "\'")
 end
 vim.fn['plug#end']()
@@ -47,11 +48,11 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
 vim.keymap.set('n', 'gr', vim.lsp.buf.references)
 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
-vim.keymap.set({'n', 'i'}, '<C-k>', vim.lsp.buf.signature_help)
+vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
 vim.keymap.set('n', 'gh', vim.lsp.buf.hover)
-vim.keymap.set({'n', 'v'}, 'gf', vim.lsp.buf.format)
+vim.keymap.set({ 'n', 'v' }, 'gf', vim.lsp.buf.format)
 vim.keymap.set('n', 'gn', vim.lsp.buf.rename)
-vim.keymap.set({'n', 'v'}, 'ga', vim.lsp.buf.code_action)
+vim.keymap.set({ 'n', 'v' }, 'ga', vim.lsp.buf.code_action)
 
 
 -- Autocompletion
@@ -69,11 +70,11 @@ cmp.setup({
 		['<C-Space>'] = cmp.mapping.complete(),
 		['<C-e>'] = cmp.mapping.abort(),
 		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }),
+	}),
 	sources = cmp.config.sources({
-		{name='nvim_lsp'}
+		{ name = 'nvim_lsp' }
 	}, {
-		{name='buffer'}
+		{ name = 'buffer' }
 	})
 })
 
@@ -106,3 +107,19 @@ for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
 end
 
+-- Metals
+local metals = require('metals')
+local metals_config = metals.bare_config()
+metals_config.init_options.statusBarProvider = "off"
+metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+metals_config.on_attach = function(client, bufnr)
+	-- metals.setup_dap()
+end
+local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { 'scala', 'sbt' },
+	callback = function()
+		metals.initialize_or_attach(metals_config)
+	end,
+	group = nvim_metals_group
+})
