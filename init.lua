@@ -23,7 +23,7 @@ vim.fn['plug#end']()
 local mason = require('mason')
 mason.setup()
 
-vim.cmd.colorscheme('PaperColor')
+vim.cmd.colorscheme('industry')
 
 vim.cmd.syntax('on')
 vim.opt.number = true
