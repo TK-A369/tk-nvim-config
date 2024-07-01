@@ -101,7 +101,9 @@ local lsps = {
 			}
 		}
 	}--]]
-	jedi_language_server = {}
+	jedi_language_server = {},
+	tsserver = {},
+	eslint = {}
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
