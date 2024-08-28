@@ -14,10 +14,15 @@ local plugs = {
 	'hrsh7th/nvim-cmp',
 	'hrsh7th/cmp-vsnip',
 	'hrsh7th/vim-vsnip',
-	'scalameta/nvim-metals'
+	'scalameta/nvim-metals',
+	{ 'nvim-treesitter/nvim-treesitter', '{\'do\': \':TSUpdate\'}' }
 }
 for _, v in ipairs(plugs) do
-	vim.cmd("Plug \'" .. v .. "\'")
+	if type(v) == 'table' then
+		vim.cmd("Plug \'" .. v[1] .. "\', " .. v[2])
+	else
+		vim.cmd("Plug \'" .. v .. "\'")
+	end
 end
 vim.fn['plug#end']()
 
@@ -103,7 +108,8 @@ local lsps = {
 	}--]]
 	jedi_language_server = {},
 	tsserver = {},
-	eslint = {}
+	eslint = {},
+	html = {}
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
