@@ -109,7 +109,8 @@ local lsps = {
 	jedi_language_server = {},
 	tsserver = {},
 	eslint = {},
-	html = {}
+	html = {},
+	jdtls = {} --Consider https://github.com/mfussenegger/nvim-jdtls instead
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
