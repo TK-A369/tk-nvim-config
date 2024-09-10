@@ -107,7 +107,7 @@ local lsps = {
 		}
 	}--]]
 	jedi_language_server = {},
-	tsserver = {},
+	ts_ls = {},
 	eslint = {},
 	html = {},
 	jdtls = {} --Consider https://github.com/mfussenegger/nvim-jdtls instead
