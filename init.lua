@@ -111,7 +111,8 @@ local lsps = {
 	eslint = {},
 	html = {},
 	jdtls = {}, --Consider https://github.com/mfussenegger/nvim-jdtls instead
-	zls = { settings = {} }
+	zls = { settings = {} },
+	gopls = {}
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
