@@ -47,6 +47,7 @@ vim.opt.mouse = 'a'
 local telescope_builtin = require('telescope.builtin')
 vim.keymap.set('n', ',cs', telescope_builtin.colorscheme)
 vim.keymap.set('n', ',f', telescope_builtin.find_files)
+vim.keymap.set('n', ',b', telescope_builtin.buffers)
 
 -- LSP keybindings
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
