@@ -114,7 +114,8 @@ local lsps = {
 	jdtls = {}, --Consider https://github.com/mfussenegger/nvim-jdtls instead
 	zls = { settings = {} },
 	gopls = {},
-	svelte = {}
+	svelte = {},
+	hls = {}
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
