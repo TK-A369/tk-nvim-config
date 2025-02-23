@@ -5,7 +5,7 @@ local plugs = {
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
 	'williamboman/mason-lspconfig.nvim',
-	'NLKNguyen/papercolor-theme',
+	-- 'NLKNguyen/papercolor-theme',
 	'nvim-telescope/telescope.nvim',
 	'hrsh7th/cmp-nvim-lsp',
 	'hrsh7th/cmp-buffer',
@@ -29,7 +29,7 @@ vim.fn['plug#end']()
 local mason = require('mason')
 mason.setup()
 
-vim.cmd.colorscheme('industry')
+vim.cmd.colorscheme('retrobox')
 
 vim.cmd.syntax('on')
 vim.opt.number = true
