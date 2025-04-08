@@ -7,13 +7,13 @@ local plugs = {
 	'williamboman/mason-lspconfig.nvim',
 	-- 'NLKNguyen/papercolor-theme',
 	'nvim-telescope/telescope.nvim',
-	'hrsh7th/cmp-nvim-lsp',
-	'hrsh7th/cmp-buffer',
-	'hrsh7th/cmp-path',
-	'hrsh7th/cmp-cmdline',
-	'hrsh7th/nvim-cmp',
-	'hrsh7th/cmp-vsnip',
-	'hrsh7th/vim-vsnip',
+	-- 'hrsh7th/cmp-nvim-lsp',
+	-- 'hrsh7th/cmp-buffer',
+	-- 'hrsh7th/cmp-path',
+	-- 'hrsh7th/cmp-cmdline',
+	-- 'hrsh7th/nvim-cmp',
+	-- 'hrsh7th/cmp-vsnip',
+	-- 'hrsh7th/vim-vsnip',
 	'scalameta/nvim-metals',
 	{ 'nvim-treesitter/nvim-treesitter', '{\'do\': \':TSUpdate\'}' }
 }
@@ -52,37 +52,48 @@ vim.keymap.set('n', ',b', telescope_builtin.buffers)
 -- LSP keybindings
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
-vim.keymap.set('n', 'gr', vim.lsp.buf.references)
-vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
-vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
+-- vim.keymap.set('n', 'gr', vim.lsp.buf.references)
+-- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
+-- vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help)
 vim.keymap.set('n', 'gh', vim.lsp.buf.hover)
 vim.keymap.set({ 'n', 'v' }, 'gf', vim.lsp.buf.format)
-vim.keymap.set('n', 'gn', vim.lsp.buf.rename)
-vim.keymap.set({ 'n', 'v' }, 'ga', vim.lsp.buf.code_action)
+-- vim.keymap.set('n', 'gn', vim.lsp.buf.rename)
+-- vim.keymap.set({ 'n', 'v' }, 'ga', vim.lsp.buf.code_action)
 
 
 -- Autocompletion
-local cmp = require('cmp')
-cmp.setup({
-	snippet = {
-		expand = function(args)
-			vim.fn["vsnip#anonymous"](args.body)
+vim.opt.completeopt = { "fuzzy", "menu", "menuone", "noinsert", "noselect" }
+vim.api.nvim_create_autocmd('LspAttach', {
+	callback = function(args)
+		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+		if client:supports_method('textDocument/completion') then
+			vim.lsp.completion.enable(
+				true, client.id, args.buf,
+				{ autotrigger = true })
 		end
-	},
-	window = {},
-	mapping = cmp.mapping.preset.insert({
-		['<C-b>'] = cmp.mapping.scroll_docs(-4),
-		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-Space>'] = cmp.mapping.complete(),
-		['<C-e>'] = cmp.mapping.abort(),
-		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-	}),
-	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' }
-	}, {
-		{ name = 'buffer' }
-	})
+	end
 })
+-- local cmp = require('cmp')
+-- cmp.setup({
+-- 	snippet = {
+-- 		expand = function(args)
+-- 			vim.fn["vsnip#anonymous"](args.body)
+-- 		end
+-- 	},
+-- 	window = {},
+-- 	mapping = cmp.mapping.preset.insert({
+-- 		['<C-b>'] = cmp.mapping.scroll_docs(-4),
+-- 		['<C-f>'] = cmp.mapping.scroll_docs(4),
+-- 		['<C-Space>'] = cmp.mapping.complete(),
+-- 		['<C-e>'] = cmp.mapping.abort(),
+-- 		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+-- 	}),
+-- 	sources = cmp.config.sources({
+-- 		{ name = 'nvim_lsp' }
+-- 	}, {
+-- 		{ name = 'buffer' }
+-- 	})
+-- })
 
 -- LSP setup
 local lspconfig = require('lspconfig')
@@ -119,13 +130,17 @@ local lsps = {
 }
 for k, v in pairs(lsps) do
 	lspconfig[k].setup(v)
+
+	-- vim.lsp.enable(k)
+	-- vim.lsp.config(k, v)
 end
 
 -- Metals
 local metals = require('metals')
 local metals_config = metals.bare_config()
 metals_config.init_options.statusBarProvider = "off"
-metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+metals_config.capabilities = vim.lsp.protocol.make_client_capabilities()
 metals_config.on_attach = function(client, bufnr)
 	-- metals.setup_dap()
 end
