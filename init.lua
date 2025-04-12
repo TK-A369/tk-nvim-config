@@ -15,7 +15,8 @@ local plugs = {
 	-- 'hrsh7th/cmp-vsnip',
 	-- 'hrsh7th/vim-vsnip',
 	'scalameta/nvim-metals',
-	{ 'nvim-treesitter/nvim-treesitter', '{\'do\': \':TSUpdate\'}' }
+	{ 'nvim-treesitter/nvim-treesitter', '{\'do\': \':TSUpdate\'}' },
+	'Olical/conjure'
 }
 for _, v in ipairs(plugs) do
 	if type(v) == 'table' then
@@ -42,6 +43,8 @@ vim.opt.shiftwidth = 4
 vim.opt.virtualedit = 'onemore'
 vim.opt.autoindent = true
 vim.opt.mouse = 'a'
+
+vim.g.maplocalleader = ','
 
 -- Telescope keybindings
 local telescope_builtin = require('telescope.builtin')
